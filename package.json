@@ -1,0 +1,22 @@
+{
+  "name": "dc-update",
+  "version": "1.0.0",
+  "description": "price update",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/domain-combine/dc-update.git"
+  },
+  "author": "Wonjun Kim <kimjnsjwj@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/domain-combine/dc-update/issues"
+  },
+  "homepage": "https://github.com/domain-combine/dc-update#readme",
+  "dependencies": {
+    "ioredis": "^4.9.3"
+  }
+}
