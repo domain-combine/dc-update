@@ -154,7 +154,7 @@ const getBluehostList = async () => {
   return results.map(x => ({ tld: x.domainInfo.tld, price: x.terms[0].price }));
 };
 
-module.exports = {
+module.exports = [
   getNameList,
   getGabiaList,
   getGodaddyList,
@@ -163,4 +163,4 @@ module.exports = {
   getOnlyDomainsList,
   getMailPlugList,
   getBluehostList,
-};
+];
