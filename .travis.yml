@@ -14,6 +14,8 @@ script:
 - npm run lint
 
 after_success:
+- rm -rf node_modules
+- npm i --only=prod
 - zip -r deploy.zip node_modules crawler.js index.js package.json package-lock.json
 - rm -rf !("deploy.zip")
 
