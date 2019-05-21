@@ -19,8 +19,9 @@
   "dependencies": {
     "axios": "^0.18.0",
     "cheerio": "^1.0.0-rc.3",
+    "chrome-aws-lambda": "^1.16.1",
     "ioredis": "^4.9.3",
-    "puppeteer": "^1.16.0"
+    "puppeteer-core": "^1.16.0"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
