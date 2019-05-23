@@ -176,12 +176,12 @@ const getBluehostList = async () => {
 };
 
 module.exports = [
-  getNameList,
-  getGabiaList,
-  getGodaddyList,
-  getHostingKrList,
-  getDirectHostingList,
-  getOnlyDomainsList,
-  getMailPlugList,
-  getBluehostList,
+  getNameList(),
+  getGabiaList(),
+  getGodaddyList(),
+  getHostingKrList(),
+  getDirectHostingList(),
+  getOnlyDomainsList(),
+  getMailPlugList(),
+  getBluehostList(),
 ];
