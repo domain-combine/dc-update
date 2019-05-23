@@ -2,7 +2,9 @@
 const crawler = require('./crawler');
 
 exports.handler = (event, context, cb) => {
-  crawler[0].then((e) => {
-    cb(null, e);
+  crawler().then((arr) => {
+    Promise.all(arr)
+      .then(e => cb(null, e))
+      .catch(e => cb(e));
   });
 };
