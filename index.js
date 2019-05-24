@@ -12,8 +12,17 @@ exports.handler = async () => {
     headless: chromium.headless,
   });
 
-  const pArr = await crawler(browser);
-  const result = await Promise.all(pArr);
+  const crawlerArr = await crawler(browser);
+  const result = _.flatten(await Promise.all(crawlerArr));
   await browser.close();
-  return _.flatten(result);
+
+  return result.reduce((obj, e) => {
+    if (!obj[e.tld]) Object.defineProperty(obj, e.tld, { value: [], enumerable: true });
+    obj[e.tld].push({
+      origin: e.origin,
+      price: e.price,
+    });
+
+    return obj;
+  }, {});
 };
