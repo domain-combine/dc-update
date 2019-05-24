@@ -15,7 +15,7 @@ module.exports = async (browser) => {
     result = Object.entries(json.domains).map(e => ({
       tld: e[0].split('.')[1],
       price: e[1].renewal_price,
-      origin: 'https://www.naver.com',
+      origin: 'https://www.name.com',
     }));
 
     return result;
