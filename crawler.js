@@ -15,6 +15,7 @@ module.exports = async (browser) => {
     result = Object.entries(json.domains).map(e => ({
       tld: e[0].split('.')[1],
       price: e[1].renewal_price,
+      origin: 'https://www.naver.com',
     }));
 
     return result;
@@ -32,7 +33,7 @@ module.exports = async (browser) => {
     await page.waitFor(() => !document.querySelector('#ul_recommend .fal.fa-spinner.fa-spin'));
     const domains = await page.$eval('#ul_recommend', e => e.innerText);
     domains.split('\n').forEach((e, i) => {
-      if (i % 2 === 0) result.push({ tld: e.split(' ')[0].split('.')[1], price: undefined });
+      if (i % 2 === 0) result.push({ tld: e.split(' ')[0].split('.')[1], price: undefined, origin: 'https://www.gabia.com' });
       else [result[Math.floor(i / 2)].price] = e.split(' /');
     });
 
@@ -53,14 +54,14 @@ module.exports = async (browser) => {
       },
     });
     return Products
-      .map(({ Tld: tld, PriceInfo: { CurrentPrice: price } }) => ({ tld, price }));
+      .map(({ Tld: tld, PriceInfo: { CurrentPrice: price } }) => ({ tld, price, origin: 'https://godaddy.com/' }));
   };
 
   const getHostingKrList = async () => {
     const { data: { event: prices } } = await axios('https://www.hosting.kr/domains/carts/prices');
     const arr = [];
     Object.keys(prices).forEach((key) => {
-      arr.push({ tld: key.slice(1), price: prices[key][1] });
+      arr.push({ tld: key.slice(1), price: prices[key][1], origin: 'https://www.hosting.kr' });
     });
     return arr;
   };
@@ -74,6 +75,7 @@ module.exports = async (browser) => {
       .find('tr').map((i, e) => ({
         tld: $(e).find('th').text(),
         price: $(e).find('td').text().slice(0, -3),
+        origin: 'https://direct.co.kr',
       }))
       .get();
 
@@ -90,7 +92,7 @@ module.exports = async (browser) => {
     await page.waitForSelector('#searchResultPage > div.Results > div.HomeResult > div');
     // eslint-disable-next-line no-undef
     const [{ ecommerce: { impressions: prices } }] = await page.evaluate(() => dataLayer);
-    result = prices.map(({ name: tld, price }) => ({ tld, price }));
+    result = prices.map(({ name: tld, price }) => ({ tld, price, origin: 'https://www.onlydomains.com' }));
 
     return result;
   };
@@ -126,12 +128,12 @@ module.exports = async (browser) => {
       params: param,
     });
 
-    return Object.values(data).map(x => ({ tld: x.tld, price: x.gp_tot_price }));
+    return Object.values(data).map(x => ({ tld: x.tld, price: x.gp_tot_price, origin: 'https://www.mailplug.com' }));
   };
 
   const getBluehostList = async () => {
     const { data: { results } } = await axios.get(`https://registration.bluehost.com/domains/search/${domain}?propertyID=52`);
-    return results.map(x => ({ tld: x.domainInfo.tld, price: x.terms[0].price }));
+    return results.map(x => ({ tld: x.domainInfo.tld, price: x.terms[0].price, origin: 'https://www.bluehost.com/domains' }));
   };
 
   return [
