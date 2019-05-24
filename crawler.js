@@ -15,7 +15,7 @@ module.exports = async (browser) => {
 
     result = Object.entries(json.domains).map(e => ({
       tld: e[0].split('.')[1],
-      price: e[1].renewal_price * exRate,
+      price: Math.floor(e[1].renewal_price * exRate),
       origin: 'https://www.name.com',
     }));
 
@@ -94,7 +94,7 @@ module.exports = async (browser) => {
     await page.waitForSelector('#searchResultPage > div.Results > div.HomeResult > div');
     // eslint-disable-next-line no-undef
     const [{ ecommerce: { impressions: prices } }] = await page.evaluate(() => dataLayer);
-    result = prices.map(({ name: tld, price }) => ({ tld, price: price * exRate, origin: 'https://www.onlydomains.com' }));
+    result = prices.map(({ name: tld, price }) => ({ tld, price: Math.floor(price * exRate), origin: 'https://www.onlydomains.com' }));
 
     return result;
   };
@@ -135,7 +135,7 @@ module.exports = async (browser) => {
 
   const getBluehostList = async () => {
     const { data: { results } } = await axios.get(`https://registration.bluehost.com/domains/search/${domain}?propertyID=52`);
-    return results.map(x => ({ tld: x.domainInfo.tld, price: x.terms[0].price * exRate, origin: 'https://www.bluehost.com/domains' }));
+    return results.map(x => ({ tld: x.domainInfo.tld, price: Math.floor(x.terms[0].price * exRate), origin: 'https://www.bluehost.com/domains' }));
   };
 
   return [
