@@ -4,6 +4,11 @@ const _ = require('lodash');
 const puppeteer = require('puppeteer-core');
 const crawler = require('./crawler');
 
+const generalize = (tld) => {
+  if (tld[0] === '.') return tld.slice(1);
+  return tld;
+};
+
 exports.handler = async () => {
   const browser = await puppeteer.launch({
     args: chromium.args,
@@ -17,8 +22,9 @@ exports.handler = async () => {
   await browser.close();
 
   return result.reduce((obj, e) => {
-    if (!obj[e.tld]) Object.defineProperty(obj, e.tld, { value: [], enumerable: true });
-    obj[e.tld].push({
+    const tld = generalize(e.tld);
+    if (!obj[tld]) Object.defineProperty(obj, tld, { value: [], enumerable: true });
+    obj[tld].push({
       origin: e.origin,
       price: e.price,
     });
