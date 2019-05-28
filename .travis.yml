@@ -16,8 +16,6 @@ script:
 after_success:
 - rm -rf node_modules
 - npm i --only=prod
-- zip -r deploy.zip node_modules crawler.js index.js package.json package-lock.json
-- rm -rf !("deploy.zip")
 
 deploy:
   - provider: lambda
@@ -26,7 +24,8 @@ deploy:
     function_name: domain-combine-updater
     role: $LAMBDA_ROLE_ARN
     region: ap-northeast-2
-    handler_name: "handler"
-    runtime: "nodejs10.x"
+    module_name: index
+    handler_name: handler
+    runtime: nodejs8.10
     memory_size: 1024
     timeout: 180
