@@ -1,8 +1,10 @@
-/* const redis = require('ioredis'); */
 const chromium = require('chrome-aws-lambda');
+const Redis = require('ioredis');
 const _ = require('lodash');
 const puppeteer = require('puppeteer-core');
 const crawler = require('./crawler');
+
+const redis = new Redis(6379, process.env.REDIS_URL);
 
 const generalize = (tld) => {
   if (tld[0] === '.') return tld.slice(1);
@@ -10,6 +12,8 @@ const generalize = (tld) => {
 };
 
 exports.handler = async () => {
+  redis.set('foo', 'bar');
+  console.log(await redis.get('foo'));
   const browser = await puppeteer.launch({
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
