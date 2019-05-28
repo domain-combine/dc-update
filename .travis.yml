@@ -20,12 +20,13 @@ after_success:
 - rm -rf !("deploy.zip")
 
 deploy:
-  - provider: s3
+  - provider: lambda
     access_key_id: $AWS_ACCESS_KEY
     secret_access_key: $AWS_SECRET_KEY
-    bucket: domain-combine-lambda
+    function_name: domain-combine-updater
+    role: $LAMBDA_ROLE_ARN
     region: ap-northeast-2
-    skip_cleanup: true
-    wait-until-deployed: true
-    on:
-      branch: master
+    handler_name: "handler"
+    runtime: "nodejs10.x"
+    memory_size: 1024
+    timeout: 180
