@@ -12,8 +12,6 @@ const generalize = (tld) => {
 };
 
 exports.handler = async () => {
-  redis.set('foo', 'bar');
-  console.log(await redis.get('foo'));
   const browser = await puppeteer.launch({
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
@@ -25,7 +23,7 @@ exports.handler = async () => {
   const result = _.flatten(await Promise.all(crawlerArr));
   await browser.close();
 
-  return result.reduce((obj, e) => {
+  const tlds = result.reduce((obj, e) => {
     const tld = generalize(e.tld);
     if (!obj[tld]) Object.defineProperty(obj, tld, { value: [], enumerable: true });
     obj[tld].push({
@@ -35,4 +33,8 @@ exports.handler = async () => {
 
     return obj;
   }, {});
+
+  await Promise.all(Object.keys(tlds).map(tld => redis.set(tld, JSON.stringify(tlds[tld]))));
+
+  return { result: 'Updated' };
 };
