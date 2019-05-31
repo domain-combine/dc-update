@@ -35,7 +35,7 @@ module.exports = async (browser) => {
     const domains = await page.$eval('#ul_recommend', e => e.innerText);
     domains.split('\n').forEach((e, i) => {
       if (i % 2 === 0) result.push({ tld: e.split(' ')[0].split('.')[1], price: undefined, origin: 'https://www.gabia.com' });
-      else result[Math.floor(i / 2)].price = e.split(' /')[0].replace(/[^\d]/g, '');
+      else result[Math.floor(i / 2)].price = Number(e.split(' /')[0].replace(/[^\d]/g, ''));
     });
 
     return result;
@@ -75,8 +75,8 @@ module.exports = async (browser) => {
       .first()
       .find('tr').map((i, e) => ({
         tld: $(e).find('th').text(),
-        price: $(e).find('td').text().slice(0, -3)
-          .replace(/[^\d]/g, ''),
+        price: Number($(e).find('td').text().slice(0, -3)
+          .replace(/[^\d]/g, '')),
         origin: 'https://direct.co.kr',
       }))
       .get();
@@ -130,7 +130,7 @@ module.exports = async (browser) => {
       params: param,
     });
 
-    return Object.values(data).map(x => ({ tld: x.tld, price: x.gp_tot_price.replace(/[^\d]/g, ''), origin: 'https://www.mailplug.com' }));
+    return Object.values(data).map(x => ({ tld: x.tld, price: Number(x.gp_tot_price.replace(/[^\d]/g, '')), origin: 'https://www.mailplug.com' }));
   };
 
   const getBluehostList = async () => {
