@@ -1,6 +1,6 @@
 const chromium = require('chrome-aws-lambda');
 const Redis = require('ioredis');
-const _ = require('lodash');
+const flatten = require('lodash.flatten');
 const puppeteer = require('puppeteer-core');
 const crawler = require('./crawler');
 
@@ -20,7 +20,7 @@ exports.handler = async () => {
   });
 
   const crawlerArr = await crawler(browser);
-  const result = _.flatten(await Promise.all(crawlerArr));
+  const result = flatten(await Promise.all(crawlerArr));
   await browser.close();
 
   const tlds = result.reduce((obj, e) => {
