@@ -34,7 +34,9 @@ exports.handler = async () => {
     return obj;
   }, {});
 
-  await Promise.all(Object.keys(tlds).map(tld => redis.set(tld, JSON.stringify(tlds[tld]))));
+  const settings = Object.keys(tlds).map(tld => redis.set(tld, JSON.stringify(tlds[tld])));
+  settings.push(redis.set('_tlds', JSON.stringify(Object.keys(tlds))));
+  await Promise.all(settings);
 
   return { result: 'Updated' };
 };
