@@ -38,5 +38,5 @@ exports.handler = async () => {
   settings.push(redis.set('_tlds', JSON.stringify(Object.keys(tlds))));
   await Promise.all(settings);
 
-  return { result: 'Updated' };
+  return { result: 'Updated', tlds };
 };
